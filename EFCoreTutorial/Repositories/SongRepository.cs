@@ -1,6 +1,8 @@
 ﻿using EFCoreTutorial.Context;
 using EFCoreTutorial.Models;
 using EFCoreTutorial.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace EFCoreTutorial.Repositories
 {
@@ -8,7 +10,7 @@ namespace EFCoreTutorial.Repositories
     {
         public SongRepository(MusicContext context) 
             : base(context)
-        {
+        {        
         }
     }
 }

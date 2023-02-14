@@ -12,5 +12,6 @@ namespace EFCoreTutorial.Repositories.Interfaces
         TEntity Update(TEntity entity);
         void Delete(int id);
 
+        List<TEntity> GetByPage(int pageNumber, int pageSize);
     }
 }

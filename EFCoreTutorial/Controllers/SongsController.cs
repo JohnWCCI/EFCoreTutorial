@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using EFCoreTutorial.Context;
 using EFCoreTutorial.Models;
 using EFCoreTutorial.Repositories.Interfaces;
+using EFCoreTutorial.Repositories;
 
 namespace EFCoreTutorial.Controllers
 {

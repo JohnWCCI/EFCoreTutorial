@@ -17,14 +17,14 @@ namespace EFCoreTutorial.Repositories
         protected DbContext DataContext { get { return context; } }
         
 
-        public TEntity Add(TEntity entity)
+        public virtual TEntity Add(TEntity entity)
         {
             DataContext.Set<TEntity>().Add(entity);
             DataContext.SaveChanges();
             return entity;
         }
 
-        public void Delete(int id)
+        public virtual void Delete(int id)
         {
            TEntity? entity = GetById(id);
             if (entity != null)
@@ -34,17 +34,19 @@ namespace EFCoreTutorial.Repositories
             }
         }
 
-        public List<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public virtual List<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            return DataContext.Set<TEntity>().Where(predicate).ToList();
+            IEnumerable<TEntity> query = DataContext.Set<TEntity>()
+                .Where(predicate);
+            return query.ToList(); 
         }
 
-        public List<TEntity> GetAll()
+        public virtual List<TEntity> GetAll()
         {
             return DataContext.Set<TEntity>().ToList();
         }
 
-        public TEntity? GetById(int id)
+        public virtual TEntity? GetById(int id)
         {
             TEntity? entity = DataContext.Set<TEntity>()
                 .Where(w => EF.Property<int>(w, "Id") == id)
@@ -52,11 +54,22 @@ namespace EFCoreTutorial.Repositories
             return entity;
         }
 
-        public TEntity Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
-           DataContext.Set<TEntity>().Add(entity).State = EntityState.Modified;
+           DataContext.Set<TEntity>().Add(entity)
+                .State = EntityState.Modified;
            DataContext.SaveChanges();
             return entity;
         }
+        public virtual List<TEntity> GetByPage(int pageNumber,int pageSize)
+        {
+            int startingRecordNumber = (pageNumber-1) * pageSize;
+
+            return context.Set<TEntity>()
+                 .Skip(startingRecordNumber)
+                 .Take(pageSize)
+                 .ToList();
+        }
+
     }
 }

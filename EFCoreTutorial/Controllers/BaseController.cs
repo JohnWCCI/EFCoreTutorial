@@ -1,18 +1,14 @@
-﻿using EFCoreTutorial.Models;
-using EFCoreTutorial.Repositories;
-using EFCoreTutorial.Repositories.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using EFCoreTutorial.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreTutorial.Controllers
 {
-   
+
     [ApiController]
     public abstract class BaseController<TEntity> : ControllerBase
          where TEntity : class
     {
-        private readonly IRepository<TEntity> repository;
+        protected readonly IRepository<TEntity> repository;
 
         public BaseController(IRepository<TEntity> repository)
         {
@@ -24,9 +20,19 @@ namespace EFCoreTutorial.Controllers
             return repository.GetAll();
         }
 
+        [HttpGet("GetByPage")]
+        public ActionResult<IEnumerable<TEntity>> GetByPage(int pageNumber, int pageSize)
+        {
+            if(pageNumber<= 1)
+            {
+                pageNumber= 1;
+            }
+            return repository.GetByPage(pageNumber, pageSize);
+        }
 
-        [HttpGet("{id}")]
-        public ActionResult<TEntity> Get(int id)
+
+        [HttpGet("GetById")]
+        public ActionResult<TEntity> GetById(int id)
         {
             var entity = repository.GetById(id);
 
